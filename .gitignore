@@ -1,0 +1,5 @@
+certs/*
+.idea
+.DS_Store
+logs/
+logs/*

@@ -1,0 +1,113 @@
+version: '3'
+
+services:
+  reverse-proxy:
+    image: traefik:v2.9
+    container_name: traefik
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    ports:
+      # Web
+      - 80:80
+      - 443:443
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      # Map the static configuration into the container
+      - ./traefik/config/static.yml:/etc/traefik/traefik.yml:ro
+      # Map the dynamic configuration into the container
+      - ./traefik/config/dynamic.yml:/etc/traefik/dynamic.yml:ro
+      # Map the certificats into the container
+      - ./certs:/etc/certs:ro
+    networks:
+      - proxy
+  whoami:
+    image: containous/whoami
+    container_name: whoami
+    security_opt:
+      - no-new-privileges:true
+    labels:
+      # Enable this container to be mapped by traefik
+      # For more information, see: https://docs.traefik.io/providers/docker/#exposedbydefault
+      - "traefik.enable=true"
+      # Define the network that should be used
+      - "traefik.docker.network=proxy"
+      # URL to reach this container
+      - "traefik.http.routers.whoami.rule=Host(`whoami.docker.localhost`)"
+      # Activation of TLS
+      - "traefik.http.routers.whoami.tls=true"
+      # If port is different than 80, use the following service:
+      # - "traefik.http.services.<service_name>.loadbalancer.server.port=<port>"
+    networks:
+      - proxy
+  mobiliscope:
+    container_name: mobiliscope
+    build:
+      context: .
+      dockerfile: apache/Dockerfile
+#    ports:
+#      - '8081:8081'
+    volumes:
+      - ./logs/apache:/var/log/apache2/
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.mobiliscope.rule=Host(`mobiliscope.docker.localhost`)"
+      - "traefik.http.routers.mobiliscope.tls=true"
+        #- "traefik.http.services.apache.loadbalancer.server.port=8081"
+    networks:
+      - proxy
+  php:
+    image: php:fpm-alpine
+    container_name: php
+    networks:
+      - internal
+    volumes:
+      - ./data/:/var/www/html/
+      - ./logs/php.log:/var/log/fpm-php.www.log
+  mobiliquest:
+    build:
+      context: .
+      dockerfile: mobiliquest/Dockerfile
+    security_opt:
+      - no-new-privileges:true
+    container_name: mobiliquest
+    # ports:
+    #  - 8080:8081
+    volumes:
+      - 'minio_data/:/data'
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network.proxy" 
+      - "traefik.http.routers.mobiliquest.rule=Host(`mobiliquest.docker.localhost`)"
+      - "traefik.http.routers.mobiliquest.tls=true"
+        #  - "traefik.http.services.mobiliquest.loadbalancer.server.port=8081"
+    networks:
+      - proxy
+  minio:
+    image: docker.io/bitnami/minio:2022
+    container_name: minio
+    ports:
+      - '9000:9000'
+      - '9001:9001'
+    environment:
+        - MINIO_ROOT_USER=mathieu
+        - MINIO_ROOT_PASSWORD=mathieu-password
+    volumes:
+      - 'minio_data:/data'
+    labels:
+     - "traefik.enable=true"
+     - "traefik.docker.network=proxy"
+     - "traefik.http.routers.minio.rule=Host(`minio.docker.localhost`)"
+     - "traefik.http.routers.minio.tls=true"
+       #  - "traefik.http.services.minio.loadbalancer.server.port=9001"
+    networks:
+      - proxy
+volumes:
+  minio_data:
+    driver: local
+networks:
+  proxy:
+    external: true
+  internal:
+    driver: bridge
