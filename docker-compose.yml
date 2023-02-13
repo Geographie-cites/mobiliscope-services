@@ -21,25 +21,25 @@ services:
       - ./certs:/etc/certs:ro
     networks:
       - proxy
-  whoami:
-    image: containous/whoami
-    container_name: whoami
-    security_opt:
-      - no-new-privileges:true
-    labels:
-      # Enable this container to be mapped by traefik
-      # For more information, see: https://docs.traefik.io/providers/docker/#exposedbydefault
-      - "traefik.enable=true"
-      # Define the network that should be used
-      - "traefik.docker.network=proxy"
-      # URL to reach this container
-      - "traefik.http.routers.whoami.rule=Host(`whoami.docker.localhost`)"
-      # Activation of TLS
-      - "traefik.http.routers.whoami.tls=true"
-      # If port is different than 80, use the following service:
-      # - "traefik.http.services.<service_name>.loadbalancer.server.port=<port>"
-    networks:
-      - proxy
+#  whoami:
+#    image: containous/whoami
+#    container_name: whoami
+#    security_opt:
+#      - no-new-privileges:true
+#    labels:
+#      # Enable this container to be mapped by traefik
+#      # For more information, see: https://docs.traefik.io/providers/docker/#exposedbydefault
+#      - "traefik.enable=true"
+#      # Define the network that should be used
+#      - "traefik.docker.network=proxy"
+#      # URL to reach this container
+#      - "traefik.http.routers.whoami.rule=Host(`whoami.docker.localhost`)"
+#      # Activation of TLS
+#      - "traefik.http.routers.whoami.tls=true"
+#      # If port is different than 80, use the following service:
+#      # - "traefik.http.services.<service_name>.loadbalancer.server.port=<port>"
+ #   networks:
+ #     - proxy
   mobiliscope:
     container_name: mobiliscope
     build:
@@ -69,19 +69,17 @@ services:
     build:
       context: .
       dockerfile: mobiliquest/Dockerfile
-    security_opt:
-      - no-new-privileges:true
     container_name: mobiliquest
-    # ports:
-    #  - 8080:8081
+#    ports:
+#      - 8080:8081
     volumes:
       - 'minio_data/:/data'
     labels:
       - "traefik.enable=true"
-      - "traefik.docker.network.proxy" 
+      - "traefik.docker.network=proxy"
       - "traefik.http.routers.mobiliquest.rule=Host(`mobiliquest.docker.localhost`)"
       - "traefik.http.routers.mobiliquest.tls=true"
-        #  - "traefik.http.services.mobiliquest.loadbalancer.server.port=8081"
+      - "traefik.http.services.mobiliquest.loadbalancer.server.port=8081"
     networks:
       - proxy
   minio:
