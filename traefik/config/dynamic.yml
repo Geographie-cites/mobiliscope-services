@@ -1,11 +1,11 @@
 http:
   routers:
     traefik:
-      rule: "Host(`traefik.docker.localhost`)"
+      rule: "Host(`traefik.mobiliscope.localhost`)"
       service: "api@internal"
       tls:
         domains:
-          - main: "docker.localhost"
+          - main: "mobiliscope.localhost"
             sans:
               - "*.docker.localhost"
           - main: "domain.local"

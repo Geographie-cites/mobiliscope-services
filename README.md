@@ -23,7 +23,7 @@ docker network create proxy
 `> mkdir certs`
 
 3) Generates certificates
-`mkcert -cert-file certs/local-cert.pem -key-file certs/local-key.pem "docker.localhost" "*.docker.localhost" "domain.local" "*.domain.local"`
+`mkcert -cert-file certs/local-cert.pem -key-file certs/local-key.pem "mobiliscope.localhost" "*.mobiliscope.localhost"`
 
 ### Run Traefik and mobiliscope services
 
