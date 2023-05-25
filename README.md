@@ -31,5 +31,8 @@ Browse traefik.ajmr.mobiliscope.com
 ### Minio web interface
 Browse minioadmin.ajmr.mobiliscope.com
 
+### Minio API
+minio.ajmr.mobiliscope.com
+
 ### Mobiliscope
 Browse ajmr.mobiliscope.com
