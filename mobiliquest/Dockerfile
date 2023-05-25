@@ -38,5 +38,5 @@ RUN cd /var/mobiliquest && \
 RUN bash /var/mobiliquest/compile.sh
 
 ENTRYPOINT bash /var/mobiliquest/run.sh
-
+EXPOSE 80
 
