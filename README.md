@@ -1,21 +1,19 @@
 # mobiliscope-services
 A collection of docker configurations to build up the whole Mobiliscope ecosystem
 
-## Local execution
-### Generate auto-signed certificates
-
-1) Install mkcert
-`> sudo apt install mkcert`
-
-2) Create certs directory
-`> mkdir certs`
-
-3) Generates certificates
-`mkcert -cert-file certs/local-cert.pem -key-file certs/local-key.pem "docker.localhost" "*.docker.localhost" "domain.local" "*.domain.local"`
-
-### Run Traefik and mobiliscope services
-
-> docker-compose up -d
+### Use Traefik (reverse proxy) and mobiliscope services
+> ssh mobiliscope@mobiliscope.huma-num.fr  // connect to the huma-num machine
+mobiliscope@mobiliscope:~$ cd mobiliscope-services // go to the mobiliscope services directory (git one)
+mobiliscope@mobiliscope:~$ docker-compose up -d // starts all services
+mobiliscope@mobiliscope:~$ docker ps //check started service statuses
+mobiliscope@mobiliscope:~$ docker logs reverse-proxy // display logs of the traefik reverse-proxy
+mobiliscope@mobiliscope:~$ docker-compose down // stops all services
 
 ### Check services
-Browse traefik.docker.localhost
+Browse traefik.ajmr.mobiliscope.com
+
+### Minio web interface
+Browse minioadmin.ajmr.mobiliscope.com
+
+### Mobiliscope
+Browse ajmr.mobiliscope.com
