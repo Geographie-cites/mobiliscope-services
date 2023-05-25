@@ -24,7 +24,7 @@ COPY mobiliquest/compile.sh /var/mobiliquest/compile.sh
 RUN chmod +x /var/mobiliquest/run.sh
 RUN chmod +x /var/mobiliquest/compile.sh
 
-#EXPOSE 80
+EXPOSE 8080:8081
 USER mobiliquest
 
 
@@ -33,7 +33,7 @@ RUN cd /var/mobiliquest && \
     git config --global http.sslVerify "false" && \
     git clone https://github.com/Geographie-cites/mobiliquest.git && \
     cd mobiliquest && \
-    git checkout http4s
+    git checkout master
 
 RUN bash /var/mobiliquest/compile.sh
 

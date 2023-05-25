@@ -1,11 +1,10 @@
 services:
   traefik:
     image: traefik:v2.10
-    container_name: reverse-proxy  
     ports:
       - 80:80
       - 443:443
-        #hostname: minio
+    container_name: reverse-proxy
     networks:
       - proxy
     volumes:
@@ -109,4 +108,5 @@ networks:
 volumes:
   letsencrypt:
     name: letsencrypt
+
 
