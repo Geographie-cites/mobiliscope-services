@@ -24,7 +24,7 @@ COPY mobiliquest/compile.sh /var/mobiliquest/compile.sh
 RUN chmod +x /var/mobiliquest/run.sh
 RUN chmod +x /var/mobiliquest/compile.sh
 
-EXPOSE 8080:8081
+#EXPOSE 8080:8081
 USER mobiliquest
 
 
@@ -38,5 +38,5 @@ RUN cd /var/mobiliquest && \
 RUN bash /var/mobiliquest/compile.sh
 
 ENTRYPOINT bash /var/mobiliquest/run.sh
-
+#EXPOSE 8081
 
