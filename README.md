@@ -24,7 +24,10 @@ docker network create proxy
 > mobiliscope@mobiliscope> docker logs reverse-proxy // display logs of the traefik reverse-proxy
 > 
 > mobiliscope@mobiliscope> docker-compose down // stops all services
->>>>>>> eeb2380f72696940bc5313c9e0098e2c053080cb
+> 
+> mobiliscope@mobiliscope> docker-compose build --no-cache mobiliquest // Rebuild mobiliquest after a repository push
+> 
+> mobiliscope@mobiliscope> docker-compose build --no-cache mobiliscope // Rebuild mobiliscope after a repository push
 
 ### Check services
 Browse traefik.ajmr.mobiliscope.com
