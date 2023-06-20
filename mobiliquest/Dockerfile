@@ -24,13 +24,7 @@ COPY mobiliquest/compile.sh /var/mobiliquest/compile.sh
 RUN chmod +x /var/mobiliquest/run.sh
 RUN chmod +x /var/mobiliquest/compile.sh
 
-<<<<<<< Updated upstream
-#EXPOSE 8080:8081
-=======
-EXPOSE 80
->>>>>>> Stashed changes
 USER mobiliquest
-
 
 #PROD
 RUN cd /var/mobiliquest && \
